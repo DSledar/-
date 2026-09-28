@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>بانگێشتنامە</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@1,500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #140c08;
+      --cream: #efe6d0;
+      --paper: #e6dbbf;
+      --ink: #2b1d14;
+      --burg: #7a1836;
+      --gold: #b8964e;
+      --rose: #c99a98
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Noto Naskh Arabic', serif;
+      overflow-x: hidden;
+      min-height: 100vh
+    }
+
+    body.lock {
+      overflow: hidden;
+      height: 100vh
+    }
+
+    #bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse at 20% 12%, rgba(214, 120, 40, .42), transparent 55%),
+        radial-gradient(ellipse at 85% 45%, rgba(140, 30, 50, .38), transparent 55%),
+        radial-gradient(ellipse at 30% 95%, rgba(200, 150, 50, .28), transparent 50%), #140c08
+    }
+
+    #bg.photo {
+      background-size: cover;
+      background-position: center
+    }
+
+    #bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 45%, rgba(8, 4, 2, .8))
+    }
+
+    #leaves {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden
+    }
+
+    #leaves i {
+      position: absolute;
+      top: -8%;
+      width: 22px;
+      height: 22px;
+      opacity: .75;
+      animation: fall linear infinite
+    }
+
+    @keyframes fall {
+      to {
+        transform: translate3d(var(--dx), 115vh, 0) rotate(var(--rot))
+      }
+    }
+
+    svg.sym {
+      position: absolute;
+      width: 0;
+      height: 0
+    }
+
+    /* COVER */
+    #cover {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(190, 110, 45, .5), transparent 60%), linear-gradient(#24140c, #0f0805);
+      transition: opacity 1.2s, visibility 1.2s
+    }
+
+    #cover.gone {
+      opacity: 0;
+      visibility: hidden
+    }
+
+    #cover h1 {
+      font: 700 clamp(34px, 9vw, 54px) 'Amiri', serif;
+      color: #f3e6c9;
+      text-shadow: 0 3px 20px #000;
+      letter-spacing: .02em
+    }
+
+    #cover p {
+      color: #d9c39a;
+      font-size: 15px;
+      opacity: .85;
+      animation: pulse 2.4s ease-in-out infinite
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: .35
+      }
+    }
+
+    .env {
+      position: relative;
+      width: min(86vw, 400px);
+      aspect-ratio: 1.5;
+      perspective: 900px;
+      cursor: pointer;
+      filter: drop-shadow(0 26px 30px rgba(0, 0, 0, .6))
+    }
+
+    .env .back {
+      position: absolute;
+      inset: 0;
+      background: #d8ccae;
+      border-radius: 4px
+    }
+
+    .env .paper {
+      position: absolute;
+      inset: 8% 7% 6%;
+      background: var(--cream);
+      border: 6px dotted #fff8e8;
+      outline: 1px solid #c8b98f;
+      outline-offset: -10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 700 26px Amiri;
+      color: var(--burg);
+      transition: transform 1.3s cubic-bezier(.6, 0, .2, 1) .5s;
+      text-align: center;
+      line-height: 1.6
+    }
+
+    .env .front {
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      background:
+        linear-gradient(to bottom right, transparent 49.5%, rgba(0, 0, 0, .13) 50%, #e8dfc4 50.4%) left/50% 100% no-repeat,
+        linear-gradient(to bottom left, transparent 49.5%, rgba(0, 0, 0, .13) 50%, #e3d9bb 50.4%) right/50% 100% no-repeat;
+      -webkit-mask: linear-gradient(#000 0 0);
+      clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%)
+    }
+
+    .env .front::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(#efe6cd, #ddd2b3);
+      clip-path: polygon(0 100%, 0 0, 50% 58%, 100% 0, 100% 100%);
+      z-index: -1
+    }
+
+    .env .flap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 58%;
+      background: linear-gradient(#f2e9d0, #e2d7b8);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top;
+      transition: transform 1s cubic-bezier(.5, 0, .2, 1), z-index 0s .5s;
+      z-index: 3
+    }
+
+    .env .flap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-radial-gradient(circle at 50% 0, transparent 0 9px, rgba(184, 150, 78, .16) 10px 11px)
+    }
+
+    .env .seal {
+      position: absolute;
+      left: 50%;
+      top: 58%;
+      width: 64px;
+      height: 64px;
+      margin: -32px 0 0 -32px;
+      border-radius: 50%;
+      z-index: 5;
+      border: 0;
+      cursor: pointer;
+      background: radial-gradient(circle at 35% 30%, #e7cd8a, #a5813a 55%, #6f5420);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, .5), inset 0 0 0 5px rgba(255, 235, 170, .25), inset 0 0 0 9px rgba(90, 60, 10, .35);
+      font: 700 26px Amiri;
+      color: #5a410f;
+      transition: opacity .4s, transform .4s
+    }
+
+    .env .fl {
+      position: absolute;
+      width: 38%;
+      z-index: 4;
+      pointer-events: none
+    }
+
+    .env .fl.a {
+      left: -9%;
+      bottom: -16%
+    }
+
+    .env .fl.b {
+      right: -8%;
+      top: -12%;
+      width: 32%
+    }
+
+    .env.open .flap {
+      transform: rotateX(180deg);
+      z-index: 1
+    }
+
+    .env.open .seal {
+      opacity: 0;
+      transform: scale(1.5)
+    }
+
+    .env.open .paper {
+      transform: translateY(-62%);
+      z-index: 2
+    }
+
+    .env .paper {
+      z-index: 2
+    }
+
+    .env.open .paper {
+      z-index: 2
+    }
+
+    /* MAIN */
+    main {
+      opacity: 0;
+      transition: opacity 1.4s .3s
+    }
+
+    main.show {
+      opacity: 1
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 70px 18px;
+      position: relative
+    }
+
+    .rise {
+      opacity: 0;
+      transform: translateY(34px) rotate(var(--r, 0deg));
+      transition: opacity 1.1s, transform 1.1s cubic-bezier(.2, .7, .2, 1)
+    }
+
+    .rise.in {
+      opacity: 1;
+      transform: rotate(var(--r, 0deg))
+    }
+
+    .lace {
+      background: var(--cream);
+      border: 11px dotted #fbf3de;
+      border-radius: 18px;
+      padding: 5px;
+      box-shadow: 0 22px 40px rgba(0, 0, 0, .55), 0 0 0 2px rgba(0, 0, 0, .15)
+    }
+
+    .lace>div {
+      border: 2px solid #9c8a63;
+      padding: 22px 20px;
+      background:
+        repeating-linear-gradient(45deg, rgba(120, 95, 50, .045) 0 2px, transparent 2px 6px), var(--cream)
+    }
+
+    .fl {
+      position: absolute;
+      pointer-events: none;
+      filter: drop-shadow(0 8px 8px rgba(0, 0, 0, .4))
+    }
+
+    /* scrapbook */
+    .scrap {
+      position: relative;
+      width: min(92vw, 420px);
+      height: 560px
+    }
+
+    .note {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 250px;
+      transform: rotate(3deg);
+      font-size: 19px;
+      line-height: 1.9;
+      text-align: center;
+      color: #3a2a1c
+    }
+
+    .note b {
+      display: block;
+      font: 700 22px Amiri;
+      color: var(--burg)
+    }
+
+    .frame {
+      position: absolute;
+      left: 0;
+      top: 250px;
+      width: 210px;
+      height: 170px;
+      padding: 13px;
+      transform: rotate(-4deg);
+      background: linear-gradient(135deg, #f0d98d, #9b7a2f 40%, #e2c46b 60%, #7a5c1b);
+      box-shadow: 0 18px 30px rgba(0, 0, 0, .6)
+    }
+
+    .frame div {
+      width: 100%;
+      height: 100%;
+      background: #2a1a12 center/cover;
+      box-shadow: inset 0 0 18px #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      color: #c9a05a
+    }
+
+    .vinyl {
+      position: absolute;
+      right: 20px;
+      top: 300px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, #0b0b0b 0 2px, #1b1b1b 3px 4px);
+      box-shadow: 0 18px 30px rgba(0, 0, 0, .7);
+      animation: spin 9s linear infinite
+    }
+
+    .vinyl::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 30deg, transparent, rgba(255, 255, 255, .14) 10%, transparent 25%, transparent 50%, rgba(255, 255, 255, .12) 60%, transparent 75%)
+    }
+
+    .vinyl::after {
+      content: "";
+      position: absolute;
+      inset: 36%;
+      border-radius: 50%;
+      background: radial-gradient(circle, #111 0 5%, #c02a55 6% 100%);
+      box-shadow: 0 0 0 3px #222
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    /* invitation */
+    .inv {
+      position: relative;
+      width: min(94vw, 440px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0
+    }
+
+    .mini {
+      width: 78%;
+      aspect-ratio: 1.7;
+      background: linear-gradient(#e2d7b8, #d3c7a4);
+      border-radius: 4px;
+      position: relative;
+      align-self: flex-start;
+      margin-bottom: -38px;
+      box-shadow: 0 14px 26px rgba(0, 0, 0, .5);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 14%;
+      font: 600 22px 'Cormorant Garamond', serif;
+      color: #5a4a30;
+      clip-path: none
+    }
+
+    .mini::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 60%;
+      background: #ebe1c5;
+      clip-path: polygon(0 0, 100% 0, 50% 100%)
+    }
+
+    .mini span {
+      position: relative;
+      z-index: 1;
+      margin-top: 8%
+    }
+
+    .mini .seal2 {
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #e7cd8a, #a5813a 55%, #6f5420);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .5)
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      text-align: center;
+      font-size: 21px;
+      line-height: 2
+    }
+
+    .card .bis {
+      font: 400 28px Amiri;
+      color: #a48540;
+      margin-bottom: 4px
+    }
+
+    .card h2 {
+      font: 700 38px Amiri;
+      line-height: 1.35;
+      color: var(--ink)
+    }
+
+    .card .and {
+      font: italic 500 22px 'Cormorant Garamond', serif;
+      color: var(--burg);
+      display: block;
+      margin: -2px 0
+    }
+
+    .card .orn {
+      font-size: 30px;
+      color: #7d6535;
+      margin-top: 6px
+    }
+
+    /* countdown */
+    .cd {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: min(94vw, 460px)
+    }
+
+    .stamp {
+      width: 100%;
+      background: #f4ecd6;
+      padding: 14px 10px 10px;
+      border: 9px dotted #f4ecd6;
+      outline: 1px solid rgba(0, 0, 0, .2);
+      box-shadow: 0 16px 28px rgba(0, 0, 0, .55);
+      transform: rotate(-2deg);
+      text-align: center;
+      position: relative;
+      background-image: linear-gradient(rgba(244, 236, 214, .78), rgba(244, 236, 214, .78)), linear-gradient(120deg, #c8541f, #9b1c2e 40%, #d9a23a 70%, #5a3b12)
+    }
+
+    .stamp .t {
+      font: italic 500 clamp(34px, 10vw, 52px) 'Cormorant Garamond', serif;
+      direction: ltr;
+      color: #2d1e12;
+      letter-spacing: .03em
+    }
+
+    .stamp .l {
+      display: flex;
+      justify-content: space-around;
+      font-size: 13px;
+      color: #5a4630;
+      margin-top: 2px
+    }
+
+    .cal {
+      width: 100%;
+      background: #5e3d2a;
+      padding: 12px;
+      border-radius: 14px;
+      box-shadow: 0 18px 30px rgba(0, 0, 0, .6), inset 0 0 0 3px #7c5238;
+      transform: rotate(1.5deg)
+    }
+
+    .cal h3 {
+      text-align: center;
+      color: #f0dcb0;
+      font: 700 22px Amiri;
+      margin-bottom: 8px
+    }
+
+    .cal .g {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0;
+      background: #e8dcc0;
+      border: 2px solid #3a2416
+    }
+
+    .cal .g div {
+      aspect-ratio: 1.1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 600 15px 'Cormorant Garamond', serif;
+      color: #3a2a1c;
+      border: 1px solid rgba(58, 36, 22, .55);
+      position: relative
+    }
+
+    .cal .g .h {
+      background: #a88462;
+      color: #fff;
+      font: 700 13px 'Noto Naskh Arabic';
+      aspect-ratio: auto;
+      padding: 3px 0
+    }
+
+    .cal .g .on::after {
+      content: "";
+      position: absolute;
+      width: 86%;
+      aspect-ratio: 1;
+      border: 2.5px solid #140c08;
+      border-radius: 50%;
+      animation: ring 1.4s ease-out infinite
+    }
+
+    @keyframes ring {
+      0% {
+        transform: scale(1.5);
+        opacity: 0
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    /* place */
+    .place {
+      position: relative;
+      width: min(94vw, 460px);
+      padding-top: 10px
+    }
+
+    .tape {
+      display: inline-block;
+      background: #d6c8a2;
+      padding: 6px 26px 6px 40px;
+      font: 700 26px Amiri;
+      color: var(--ink);
+      box-shadow: 0 8px 14px rgba(0, 0, 0, .45);
+      transform: rotate(-2deg);
+      position: relative;
+      z-index: 3;
+      border-inline-start: 6px solid var(--gold)
+    }
+
+    .sheet {
+      position: relative;
+      margin-top: -14px;
+      padding: 34px 22px 40px 60px;
+      background: linear-gradient(#f0e9dc, #e7ddc9);
+      box-shadow: 0 22px 36px rgba(0, 0, 0, .55);
+      transform: rotate(1deg)
+    }
+
+    .map {
+      position: relative;
+      background: #efe5c8;
+      padding: 9px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, .5);
+      transform: rotate(-1.5deg);
+      margin-inline-end: -30px;
+      clip-path: polygon(0 3%, 4% 0, 10% 2%, 18% 0, 30% 2%, 44% 0, 58% 2%, 72% 0, 86% 2%, 100% 0, 100% 98%, 92% 100%, 80% 98%, 66% 100%, 50% 98%, 34% 100%, 20% 98%, 8% 100%, 0 98%)
+    }
+
+    .map iframe {
+      display: block;
+      width: 100%;
+      height: 230px;
+      border: 0;
+      filter: sepia(.35) saturate(.85)
+    }
+
+    .map a {
+      display: block;
+      text-align: center;
+      padding: 8px;
+      font-weight: 700;
+      color: var(--burg);
+      text-decoration: none;
+      font-size: 17px
+    }
+
+    .ribbon {
+      position: absolute;
+      left: -30px;
+      top: 26px;
+      width: 150px;
+      height: 120px;
+      pointer-events: none;
+      filter: drop-shadow(0 8px 8px rgba(0, 0, 0, .35))
+    }
+
+    .pname {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 12px;
+      color: #3a2a1c;
+      font-weight: 600
+    }
+
+    /* rsvp */
+    .form {
+      position: relative;
+      width: min(94vw, 440px);
+      background: #c9c393;
+      background-image: repeating-linear-gradient(0deg, rgba(90, 80, 30, .06) 0 2px, transparent 2px 5px);
+      padding: 30px 22px 34px;
+      box-shadow: 0 24px 40px rgba(0, 0, 0, .6);
+      border-radius: 3px
+    }
+
+    .form h3 {
+      font: 700 27px Amiri;
+      margin-bottom: 16px
+    }
+
+    .form label {
+      display: block;
+      font-weight: 600;
+      margin: 14px 0 6px;
+      font-size: 17px
+    }
+
+    .form input[type=text],
+    .form select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #8c8555;
+      background: #dbd6ac;
+      font: inherit;
+      border-radius: 4px;
+      color: var(--ink)
+    }
+
+    .opt {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 6px
+    }
+
+    .opt input {
+      display: none
+    }
+
+    .opt span {
+      display: block;
+      text-align: center;
+      padding: 16px 6px;
+      background: #8f8a5f;
+      color: #f2edcf;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .3s, transform .2s
+    }
+
+    .opt input:checked+span {
+      background: var(--burg);
+      transform: scale(1.03);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, .4)
+    }
+
+    .form button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: 0;
+      border-radius: 4px;
+      background: #2b1d14;
+      color: #f3e6c9;
+      font: 700 19px 'Noto Naskh Arabic';
+      cursor: pointer
+    }
+
+    .form button:active {
+      transform: scale(.98)
+    }
+
+    .msg {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 15px;
+      color: #4a3d1e
+    }
+
+    footer {
+      text-align: center;
+      color: #c9b489;
+      padding: 20px 20px 70px;
+      font: 700 24px Amiri
+    }
+
+    #mus {
+      position: fixed;
+      left: 14px;
+      bottom: 14px;
+      z-index: 30;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid #b8964e;
+      background: rgba(20, 12, 8, .75);
+      color: #e7cd8a;
+      font-size: 19px;
+      cursor: pointer;
+      display: none
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      * {
+        animation: none !important;
+        transition-duration: .01s !important
+      }
+    }
+  </style>
+</head>
+
+<body class="lock">
+
+  <svg class="sym" aria-hidden="true">
+    <defs>
+      <symbol id="peony" viewBox="0 0 100 100">
+        <g transform="translate(50 50)">
+          <g fill="#5c0f27">
+            <ellipse rx="17" ry="34" transform="rotate(0)" />
+            <ellipse rx="17" ry="34" transform="rotate(72)" />
+            <ellipse rx="17" ry="34" transform="rotate(144)" />
+            <ellipse rx="17" ry="34" transform="rotate(216)" />
+            <ellipse rx="17" ry="34" transform="rotate(288)" />
+          </g>
+          <g fill="#86193d">
+            <ellipse rx="14" ry="27" transform="rotate(36)" />
+            <ellipse rx="14" ry="27" transform="rotate(108)" />
+            <ellipse rx="14" ry="27" transform="rotate(180)" />
+            <ellipse rx="14" ry="27" transform="rotate(252)" />
+            <ellipse rx="14" ry="27" transform="rotate(324)" />
+          </g>
+          <g fill="#a3264f">
+            <ellipse rx="10" ry="19" transform="rotate(10)" />
+            <ellipse rx="10" ry="19" transform="rotate(82)" />
+            <ellipse rx="10" ry="19" transform="rotate(154)" />
+            <ellipse rx="10" ry="19" transform="rotate(226)" />
+            <ellipse rx="10" ry="19" transform="rotate(298)" />
+          </g>
+          <circle r="8" fill="#d98a3c" />
+          <circle r="4" fill="#f0c56a" />
+        </g>
+      </symbol>
+      <symbol id="leaf" viewBox="0 0 40 60">
+        <path d="M20 2C38 18 38 44 20 58 2 44 2 18 20 2Z" fill="currentColor" />
+        <path d="M20 8V56" stroke="rgba(0,0,0,.35)" stroke-width="1.5" />
+      </symbol>
+      <symbol id="bouquet" viewBox="0 0 200 170">
+        <g fill="#3c4a2a">
+          <use href="#leaf" x="8" y="60" width="44" height="66" transform="rotate(-50 30 90)" />
+          <use href="#leaf" x="130" y="30" width="46" height="68" transform="rotate(48 150 60)" />
+          <use href="#leaf" x="60" y="100" width="40" height="60" transform="rotate(-8 80 130)" />
+        </g>
+        <g fill="#a86a2a">
+          <use href="#leaf" x="150" y="86" width="34" height="52" transform="rotate(70 167 110)" />
+        </g>
+        <use href="#peony" x="20" y="34" width="98" height="98" />
+        <use href="#peony" x="88" y="14" width="84" height="84" />
+        <use href="#peony" x="80" y="78" width="66" height="66" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <div id="bg"></div>
+  <div id="leaves"></div>
+
+  <!-- COVER -->
+  <div id="cover">
+    <h1>بانگێشتنامە</h1>
+    <div class="env" id="env">
+      <div class="back"></div>
+      <div class="paper" id="coverNames"></div>
+      <div class="front"></div>
+      <div class="flap"></div>
+      <button class="seal" id="seal" aria-label="کردنەوە">❦</button>
+      <svg class="fl a" viewBox="0 0 200 170">
+        <use href="#bouquet" />
+      </svg>
+      <svg class="fl b" viewBox="0 0 200 170">
+        <use href="#bouquet" />
+      </svg>
+    </div>
+    <p>بۆ کردنەوەی کلیک لە کارتەکە بکە</p>
+  </div>
+
+  <main id="main">
+    <!-- 1 scrapbook -->
+    <section>
+      <div class="scrap">
+        <div class="lace note rise" style="--r:3deg">
+          <div><b id="noteTitle"></b><span id="noteText"></span></div>
+        </div>
+        <div class="frame rise" style="--r:-4deg">
+          <div id="photo">♡</div>
+        </div>
+        <div class="vinyl"></div>
+        <svg class="fl" style="right:-8px;top:190px;width:150px;height:130px">
+          <use href="#bouquet" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- 2 invitation -->
+    <section>
+      <div class="inv rise">
+        <div class="mini"><span id="miniDate"></span><i class="seal2"></i>
+          <svg class="fl" style="left:-6px;bottom:-30px;width:120px;height:100px">
+            <use href="#bouquet" />
+          </svg>
+        </div>
+        <div class="lace card">
+          <div>
+            <div class="bis">﷽</div>
+            <p id="cText1"></p>
+            <h2 id="gName"></h2><span class="and">و</span>
+            <h2 id="bName"></h2>
+            <p id="cText2" style="margin-top:6px"></p>
+            <div class="orn">❦</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 countdown -->
+    <section>
+      <div class="cd">
+        <div class="stamp rise">
+          <div class="t" id="cdT">00:00:00:00</div>
+          <div class="l"><span>ڕۆژ</span><span>کاتژمێر</span><span>خولەک</span><span>چرکە</span></div>
+        </div>
+        <div class="cal rise" style="--r:1.5deg">
+          <h3 id="calH"></h3>
+          <div class="g" id="calG"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 place -->
+    <section>
+      <div class="place rise">
+        <div class="tape">شوێنی ئاهەنگمان</div>
+        <div class="sheet">
+          <svg class="ribbon" viewBox="0 0 150 120">
+            <path d="M6 10C50 0 90 30 78 60 66 92 96 104 144 92L138 116C86 122 40 108 48 64 54 34 30 26 2 34Z"
+              fill="#c99a98" />
+            <path d="M6 10C50 0 90 30 78 60" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3" />
+          </svg>
+          <div class="map"><iframe id="mapF" loading="lazy" title="map"></iframe><a id="mapA" target="_blank"
+              rel="noopener">ڕێنمایی بۆ شوێنەکە ←</a></div>
+          <div class="pname" id="pName"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 rsvp -->
+    <section>
+      <form class="form rise" id="rsvp">
+        <svg class="fl" style="left:-26px;bottom:-30px;width:120px;height:104px">
+          <use href="#bouquet" />
+        </svg>
+        <svg class="fl" style="right:-22px;top:-42px;width:150px;height:130px">
+          <use href="#bouquet" />
+        </svg>
+        <h3>فۆرمی دڵنیاکردنەوە</h3>
+        <label for="nm">ناوت چییە؟</label><input type="text" id="nm" required>
+        <label>ئایا دەبینین لە ئاهەنگەکەمان؟</label>
+        <div class="opt">
+          <label style="margin:0"><input type="radio" name="a" value="yes" checked><span>بەڵێ، بە
+              خۆشحاڵییەوە</span></label>
+          <label style="margin:0"><input type="radio" name="a" value="no"><span>نەخێر، بەداخەوە</span></label>
+        </div>
+        <label for="gs">ژمارەی ئامادەبووان</label>
+        <select id="gs">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <button type="submit">ناردنی وەڵام</button>
+        <div class="msg" id="msg"></div>
+      </form>
+    </section>
+    <footer id="foot"></footer>
+  </main>
+
+  <button id="mus" aria-label="music">♪</button>
+  <audio id="aud" loop></audio>
+
+  <script>
+    /* ============================================================
+       ✎ ئەمە تەنها شوێنە کە دەبێت دەستکاری بکەیت — EDIT ONLY THIS
+       ============================================================ */
+    const CONFIG = {
+      groom: "عبدالرحمان",
+      bride: "ئاڤێستا",
+      coverNames: "A ❦ A",                       // text on the envelope letter
+      dateTime: "2026-10-02T04:00:00",           // YYYY-MM-DDTHH:MM:SS
+      introText: "بەڕێزتان بانگێشت کراون<br>بۆ ئاهەنگی ",
+      outroText: "دڵخۆش دەبین بە ئامادە<br>بوونتان لەگەڵ ڕێزی خانەواده",
+      noteTitle: "ئەمە بە بووکی تێدەگەم",
+      noteText: "لە ڕۆژی گرنگترین بەشی ژیانمان،<br>دەمانەوێت تۆش لەگەڵمان بیت.",
+      placeName: "هەواری شار",                  // hall name
+      mapQuery: "Hawary Shar Park",       // what Google Maps searches for
+      mapLink: "",                               // optional: paste a Google Maps share link
+      whatsapp: "9647500000000",                 // number, country code, no + or spaces
+      photoURL: "",                              // optional: photo for gold frame, e.g. "photo.jpg"
+      bgURL: "",                                 // optional: background photo, e.g. "bg.jpg"
+      musicURL: "rrr.mp3",                              // optional: e.g. "song.mp3"
+      footer: "لەگەڵ خۆشەویستییەوە ❦"
+    };
+    /* ============================================================ */
+
+    const $ = id => document.getElementById(id), D = new Date(CONFIG.dateTime);
+    const p2 = n => String(n).padStart(2, '0');
+    const months = ["کانوونی دووەم", "شوبات", "ئازار", "نیسان", "ئایار", "حوزەیران", "تەممووز", "ئاب", "ئەیلوول", "تشرینی یەکەم", "تشرینی دووەم", "کانوونی یەکەم"];
+
+    $('coverNames').textContent = CONFIG.coverNames;
+    $('noteTitle').innerHTML = CONFIG.noteTitle; $('noteText').innerHTML = CONFIG.noteText;
+    $('cText1').innerHTML = CONFIG.introText; $('cText2').innerHTML = CONFIG.outroText;
+    $('gName').textContent = CONFIG.groom; $('bName').textContent = CONFIG.bride;
+    $('miniDate').textContent = `${D.getDate()}.${D.getMonth() + 1}.${String(D.getFullYear()).slice(2)}  ${D.getHours()}:${p2(D.getMinutes())}`;
+    $('pName').textContent = CONFIG.placeName; $('foot').textContent = CONFIG.footer;
+    document.title = `${CONFIG.groom} & ${CONFIG.bride}`;
+    if (CONFIG.photoURL) { $('photo').textContent = ''; $('photo').style.backgroundImage = `url(${CONFIG.photoURL})` }
+    if (CONFIG.bgURL) { $('bg').classList.add('photo'); $('bg').style.backgroundImage = `linear-gradient(rgba(10,5,2,.55),rgba(10,5,2,.7)),url(${CONFIG.bgURL})` }
+    $('mapF').src = `https://maps.google.com/maps?q=${encodeURIComponent(CONFIG.mapQuery)}&output=embed`;
+    $('mapA').href = CONFIG.mapLink || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CONFIG.mapQuery)}`;
+
+    /* falling leaves */
+    const cols = ['#c2551c', '#a3261f', '#d99a2b', '#8a3b12', '#b8741f'], L = $('leaves');
+    for (let i = 0; i < 16; i++) {
+      const e = document.createElement('i'), s = 14 + Math.random() * 20;
+      e.style.cssText = `left:${Math.random() * 100}%;width:${s}px;height:${s * 1.4}px;color:${cols[i % 5]};animation-duration:${14 + Math.random() * 16}s;animation-delay:${-Math.random() * 26}s;--dx:${(Math.random() - .5) * 280}px;--rot:${(Math.random() > .5 ? 1 : -1) * (360 + Math.random() * 540)}deg`;
+      e.innerHTML = '<svg width="100%" height="100%"><use href="#leaf"/></svg>'; L.appendChild(e)
+    }
+
+    /* calendar (week starts Saturday) */
+    (function () {
+      const y = D.getFullYear(), m = D.getMonth(), g = $('calG');
+      $('calH').textContent = `${months[m]} ${y}`;
+      ["ش", "ی", "د", "س", "چ", "پ", "ھ"].forEach(t => g.insertAdjacentHTML('beforeend', `<div class="h">${t}</div>`));
+      const off = (new Date(y, m, 1).getDay() + 1) % 7, n = new Date(y, m + 1, 0).getDate();
+      for (let i = 0; i < off; i++)g.insertAdjacentHTML('beforeend', '<div></div>');
+      for (let d = 1; d <= n; d++)g.insertAdjacentHTML('beforeend', `<div class="${d === D.getDate() ? 'on' : ''}">${d}</div>`);
+    })();
+
+    /* countdown */
+    function tick() {
+      let s = Math.max(0, Math.floor((D - new Date()) / 1000));
+      const d = Math.floor(s / 86400); s %= 86400; const h = Math.floor(s / 3600); s %= 3600;
+      $('cdT').textContent = `${p2(d)}:${p2(h)}:${p2(Math.floor(s / 60))}:${p2(s % 60)}`
+    }
+    tick(); setInterval(tick, 1000);
+
+    /* open envelope */
+    function openIt() {
+      const env = $('env'); if (env.classList.contains('open')) return;
+      env.classList.add('open');
+      setTimeout(() => {
+        $('cover').classList.add('gone'); document.body.classList.remove('lock'); $('main').classList.add('show'); scrollTo(0, 0);
+        if (CONFIG.musicURL) { const a = $('aud'); a.src = CONFIG.musicURL; a.play().catch(() => { }); $('mus').style.display = 'block' }
+      }, 2400)
+    }
+    $('env').addEventListener('click', openIt);
+
+    /* music toggle */
+    $('mus').onclick = () => { const a = $('aud'); a.paused ? a.play() : a.pause() };
+
+    /* reveal on scroll */
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } }), { threshold: .18 });
+    document.querySelectorAll('.rise').forEach(e => io.observe(e));
+
+    /* RSVP → WhatsApp */
+    $('rsvp').addEventListener('submit', e => {
+      e.preventDefault();
+      const yes = document.querySelector('input[name=a]:checked').value === 'yes';
+      const t = `${yes ? 'بەڵێ، بە خۆشحاڵییەوە دێم' : 'نەخێر، بەداخەوە ناتوانم بێم'}\nناو: ${$('nm').value}${yes ? `\nژمارەی ئامادەبووان: ${$('gs').value}` : ''}`;
+      $('msg').textContent = 'سوپاس! ئێستا واتسئاپ دەکرێتەوە…';
+      window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(t)}`, '_blank')
+    });
+  </script>
+</body>
+
+</html>
